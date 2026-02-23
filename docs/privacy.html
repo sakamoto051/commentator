@@ -7,35 +7,62 @@
   <title>プライバシーポリシー - Commentator</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    :root {
+      --primary-color: #007bff;
+      --bg-color: #0a0a1a;
+      --text-color: #e0e0e0;
+      --heading-color: #ffffff;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, inherit;
+      margin: 0;
+    }
+
     .privacy-content {
       max-width: 800px;
-      margin: 100px auto;
+      margin: 60px auto;
       padding: 40px;
       line-height: 1.8;
-      color: #333;
     }
 
     .privacy-content h1 {
       margin-bottom: 30px;
-      font-size: 2rem;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
+      font-size: 2.5rem;
+      color: var(--heading-color);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
     }
 
     .privacy-content h2 {
       margin-top: 40px;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
+      color: var(--heading-color);
     }
 
-    .privacy-content p {
+    .privacy-content p,
+    .privacy-content ul {
       margin-bottom: 20px;
+      opacity: 0.9;
     }
 
     .back-link {
       display: inline-block;
       margin-top: 40px;
-      color: var(--primary-color, #007bff);
+      color: var(--primary-color);
       text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover {
+      opacity: 0.8;
+    }
+
+    strong {
+      color: var(--heading-color);
     }
   </style>
 </head>
