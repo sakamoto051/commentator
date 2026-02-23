@@ -1,0 +1,8 @@
+# Task: Create Extension Icon for Commentator
+
+- [x] Create icon image using `generate_image`
+- [x] Process image into 16x16, 48x48, 128x128 PNG files
+- [x] Update `manifest.json` with `icons` field
+- [x] Verify icons are correctly referenced and displayed
+- [x] Zip `client/dist` contents for extension registration
+- [x] Notify user of completion

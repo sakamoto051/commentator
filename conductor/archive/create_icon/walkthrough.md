@@ -1,0 +1,34 @@
+# Walkthrough - Creating Extension Icon for Commentator
+
+Created a modern, high-quality icon for the Commentator extension and integrated it into the project.
+
+### Promotional Assets
+
+- [promo_banner.png](file:///home/sakamoto/apps/commentator/client/public/promo_banner.png) (1280x800)
+  - 用途: Chromeウェブストアのプロモーション画像や、SNS等での紹介用
+  - 特徴: 拡張機能のUIイメージとプレミアムな世界観を表現したバナー
+
+![Commentator Promo Banner](/home/sakamoto/.gemini/antigravity/brain/1f280d50-ab84-445d-9be4-d40b4dc7550e/promo_banner.png)
+
+### Icons Created
+
+The following icons were generated and resized for the extension:
+- [icon16.png](file:///home/sakamoto/apps/commentator/client/dist/icons/icon16.png) (16x16)
+- [icon48.png](file:///home/sakamoto/apps/commentator/client/dist/icons/icon48.png) (48x48)
+- [icon128.png](file:///home/sakamoto/apps/commentator/client/dist/icons/icon128.png) (128x128)
+
+Base image used:
+![Commentator Icon Base](/home/sakamoto/.gemini/antigravity/brain/1f280d50-ab84-445d-9be4-d40b4dc7550e/commentator_promo_banner_v2_base_1771852312080.png)
+
+### Extension Package Created
+
+- [commentator-extension.zip](file:///home/sakamoto/apps/commentator/commentator-extension.zip)
+  - 内容: `client/dist` ディレクトリの全ファイル（manifest, icons, assets等）
+  - 用途: ブラウザの拡張機能管理画面から読み込み、またはストアへのアップロード用
+
+## Verification Results
+
+- Verified that the `icons/` directory contains all three PNG files.
+- Verified file dimensions using `file` command.
+- Verified `manifest.json` structure.
+- Verified that `commentator-extension.zip` exists in the project root.

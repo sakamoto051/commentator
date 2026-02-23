@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commentator — 動画に弾幕コメントを</title>
+  <meta name="description"
+    content="YouTube・Netflix・Amazon Prime Video で、視聴者みんなのコメントを動画に重ねてリアルタイム体験。Chrome拡張機能で今すぐ無料インストール。">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">
+        <span class="logo__mark">●</span> Commentator
+      </a>
+      <nav class="nav">
+        <a href="#features">機能</a>
+        <a href="#how">使い方</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a href="#cta" class="btn btn--sm">無料でインストール</a>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero__bg">
+      <div class="danmaku-track" aria-hidden="true">
+        <span class="d d1">神作画！</span>
+        <span class="d d2">うわあああ！</span>
+        <span class="d d3">かっこいい！</span>
+        <span class="d d4">泣いた…</span>
+        <span class="d d5">まじか！！</span>
+        <span class="d d6">最高の展開</span>
+        <span class="d d7">鳥肌立った</span>
+        <span class="d d8">神回確定</span>
+      </div>
+      <div class="danmaku-track danmaku-track--2" aria-hidden="true">
+        <span class="d d9">ここ好きすぎる</span>
+        <span class="d d10">感動した</span>
+        <span class="d d11">やばすぎ</span>
+        <span class="d d12">神BGM</span>
+        <span class="d d13">ここで泣く人間</span>
+        <span class="d d14">圧倒的迫力</span>
+      </div>
+    </div>
+    <div class="container hero__content">
+      <div class="hero__badge">🎉 無料で使える Chrome 拡張機能</div>
+      <h1 class="hero__headline">
+        動画を、みんなで<br><span class="accent">体験</span>しよう。
+      </h1>
+      <p class="hero__sub">
+        YouTube・Netflix・Amazon Prime Video に<br>
+        視聴者みんなのコメントを弾幕で流す Chrome 拡張機能
+      </p>
+      <div class="hero__ctas">
+        <a href="#cta" class="btn btn--primary btn--lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Chrome に追加（無料）
+        </a>
+        <a href="#how" class="btn btn--ghost btn--lg">使い方を見る →</a>
+      </div>
+      <p class="hero__trust">インストール1分 ・ アカウント不要 ・ 完全無料</p>
+    </div>
+    <div class="hero__mockup">
+      <img src="hero.png" alt="Commentator の動作イメージ" loading="eager">
+    </div>
+  </section>
+
+  <!-- ===== PLATFORMS ===== -->
+  <section class="platforms">
+    <div class="container">
+      <p class="platforms__label">対応プラットフォーム</p>
+      <div class="platforms__logos">
+        <span class="platform-badge">▶ YouTube</span>
+        <span class="platform-badge">N Netflix</span>
+        <span class="platform-badge">🎬 Prime Video</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM / SOLUTION ===== -->
+  <section class="problem">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">なぜ Commentator？</p>
+        <h2 class="section-title">ひとりで観るより、<br>一緒に観た方が<span class="accent">絶対</span>楽しい。</h2>
+        <p class="section-desc">
+          ニコニコ動画の弾幕体験を、あらゆる動画サービスへ。<br>
+          みんなのリアクションが画面に流れる瞬間、孤独な視聴がライブになる。
+        </p>
+      </div>
+      <div class="pain-cards">
+        <div class="pain-card">
+          <div class="pain-card__icon">😔</div>
+          <h3>ひとりで観ていても盛り上がれない</h3>
+          <p>感動シーンで「うわあ！」と思っても、その気持ちを共有できる場所がない。</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-card__icon">📱</div>
+          <h3>SNS でのネタバレが怖い</h3>
+          <p>Twitter でリアクションを見たいけど、ネタバレが流れてきてしまってせっかくの体験が台無し。</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-card__icon">🕐</div>
+          <h3>リアルタイムで一緒に観られない</h3>
+          <p>友人と時間を合わせて視聴するのは難しい。でも体験は共有したい。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">使い方</p>
+        <h2 class="section-title">3ステップで<br>弾幕生活スタート</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step__num">01</div>
+          <div class="step__content">
+            <h3>拡張機能をインストール</h3>
+            <p>Chrome ウェブストアから Commentator を追加するだけ。アカウント登録は不要です。</p>
+          </div>
+        </div>
+        <div class="step__connector" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step__num">02</div>
+          <div class="step__content">
+            <h3>動画を再生する</h3>
+            <p>YouTube・Netflix・Amazon Prime Video のいずれかで好きな動画を再生してください。コメント欄が自動で表示されます。</p>
+          </div>
+        </div>
+        <div class="step__connector" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step__num">03</div>
+          <div class="step__content">
+            <h3>コメントして楽しむ</h3>
+            <p>入力欄にコメントを打って送信すると、画面を流れます。他のユーザーのコメントも同じシーンに表示されます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">機能</p>
+        <h2 class="section-title">視聴体験を<br>再発明した</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card feature-card--large">
+          <div class="feature-card__icon">💬</div>
+          <h3>タイムライン連動コメント</h3>
+          <p>コメントは動画の再生時刻に紐づいて保存。同じシーンを再生したとき、必ず同じタイミングでコメントが流れます。</p>
+          <div class="feature-card__visual">
+            <div class="mini-player">
+              <div class="mini-comment c1">神作画！</div>
+              <div class="mini-comment c2">やばい…</div>
+              <div class="mini-comment c3">鳥肌</div>
+              <div class="mini-progressbar">
+                <div class="mini-progress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🌐</div>
+          <h3>3 大プラットフォーム対応</h3>
+          <p>YouTube・Netflix・Amazon Prime Video に対応。追加設定なしでどのサービスでも使えます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">⚡</div>
+          <h3>ゼロ遅延表示</h3>
+          <p>コメントはリアルタイムでスムーズに流れます。重い処理はなく、動画の再生に影響しません。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🖱️</div>
+          <h3>自由配置の入力欄</h3>
+          <p>コメント入力欄はドラッグして好きな場所に移動できます。シークバーや字幕と重なるストレスがありません。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🔒</div>
+          <h3>プライバシー配慮</h3>
+          <p>匿名でコメントを投稿できます。個人情報の登録は一切不要。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta" id="cta">
+    <div class="container cta__inner">
+      <h2 class="cta__title">今すぐ始めよう。<br>インストールは1分。</h2>
+      <p class="cta__sub">アカウント不要・完全無料・すぐ使える</p>
+      <a href="#" class="btn btn--primary btn--xl">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Chrome に追加（無料）
+      </a>
+      <p class="cta__note">Chrome 拡張機能 ・ オープンソース</p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">FAQ</p>
+        <h2 class="section-title">よくある質問</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>無料で使えますか？</summary>
+          <p>完全無料です。アカウント登録も不要です。</p>
+        </details>
+        <details class="faq-item">
+          <summary>コメントは誰に見えますか？</summary>
+          <p>Commentator をインストールしている全ユーザーが、同じ動画の同じシーンで投稿されたコメントを見ることができます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Netflix や Amazon でも使えますか？</summary>
+          <p>はい。YouTube・Netflix・Amazon Prime Video（日本・US）の3サービスに対応しています。</p>
+        </details>
+        <details class="faq-item">
+          <summary>コメントは後から見ることもできますか？</summary>
+          <p>はい。コメントは動画IDと再生時刻に紐づいて保存されているため、後から同じ動画を再生したときに同じシーンでコメントが表示されます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>コメントを非表示にすることはできますか？</summary>
+          <p>現在のバージョンでは、拡張機能ごとオフにすることで非表示にできます。個別の表示切り替え機能は今後追加予定です。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__gfx" aria-hidden="true">
+      <span class="fg fg1">神作画！</span>
+      <span class="fg fg2">うわあああ！</span>
+      <span class="fg fg3">かっこいい！</span>
+      <span class="fg fg4">泣いた…</span>
+      <span class="fg fg5">最高！</span>
+    </div>
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo"><span class="logo__mark">●</span> Commentator</span>
+        <p>動画をみんなで体験しよう。</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <p class="footer__col-title">拡張機能</p>
+          <a href="#">Chrome ウェブストア</a>
+          <a href="#">リリースノート</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">情報</p>
+          <a href="privacy.html">プライバシーポリシー</a>
+          <a href="#">利用規約</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>© 2025 Commentator</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

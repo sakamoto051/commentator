@@ -1,0 +1,26 @@
+# Implementation Plan - Single Purpose Policy Compliance
+
+Ensure the "Commentator" extension explicitly adheres to the Chrome Web Store's "Single Purpose" policy by refining its public-facing descriptions and configurations.
+
+## Proposed Changes
+
+### Configuration
+
+#### [MODIFY] [client/public/manifest.json](file:///home/sakamoto/apps/commentator/client/public/manifest.json)
+Refine the `description` to be narrow and specific.
+- From: "動画の特定の時間にコメントを表示する拡張機能"
+- To: "YouTube、Netflix、Amazon Prime Video のプレイヤー上に、視聴者のコメントを再生時刻に合わせて重ねて表示する機能に特化した拡張機能です。"
+
+#### [MODIFY] [client/dist/manifest.json](file:///home/sakamoto/apps/commentator/client/dist/manifest.json)
+Sync the updated description to the distribution manifest.
+
+### Documentation
+
+#### [MODIFY] [lp/index.html](file:///home/sakamoto/apps/commentator/lp/index.html)
+Review the hero and features sections to ensure all text reinforces the single purpose of "synchronized video comments".
+
+## Verification Plan
+
+### Manual Verification
+- Review the [manifest.json](file:///home/sakamoto/apps/commentator/client/dist/manifest.json) description to ensure it accurately reflects the extension's primary function without ambiguity.
+- Verify that the landing page messaging remains focused on the core comment overlay feature.

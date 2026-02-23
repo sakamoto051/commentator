@@ -1,0 +1,25 @@
+# Walkthrough - Creating Extension Icon for Commentator
+
+Created a modern, high-quality icon for the Commentator extension and integrated it into the project.
+
+## Changes Made
+
+### Icons Created
+
+The following icons were generated and resized for the extension:
+- [icon16.png](file:///home/sakamoto/apps/commentator/client/dist/icons/icon16.png) (16x16)
+- [icon48.png](file:///home/sakamoto/apps/commentator/client/dist/icons/icon48.png) (48x48)
+- [icon128.png](file:///home/sakamoto/apps/commentator/client/dist/icons/icon128.png) (128x128)
+
+Base image used:
+![Commentator Icon Base](/home/sakamoto/.gemini/antigravity/brain/1f280d50-ab84-445d-9be4-d40b4dc7550e/commentator_icon_base_1771850576983.png)
+
+### Configuration Updated
+
+- [manifest.json](file:///home/sakamoto/apps/commentator/client/dist/manifest.json) was updated to include the `icons` field.
+
+## Verification Results
+
+- Verified that the `icons/` directory contains all three PNG files.
+- Verified file dimensions using `file` command.
+- Verified [manifest.json](file:///home/sakamoto/apps/commentator/client/dist/manifest.json) structure.

@@ -1,0 +1,27 @@
+# Implementation Plan - Real YouTube Screenshots
+
+Capture highly realistic screenshots of the "Commentator" extension in action by navigating to a real YouTube video and injecting the extension's UI components via Playwright.
+
+## Proposed Changes
+
+### Infrastructure
+
+#### [NEW] [e2e/youtube_screenshot.spec.ts](file:///home/sakamoto/apps/commentator/e2e/youtube_screenshot.spec.ts)
+Implement a Playwright script that:
+- Navigates to a specific YouTube video.
+- Injects Danmaku-style comments (flowing text) over the video player.
+- Injects a realistic comment input box (mocking the extension UI).
+- Captures a 1280x800 screenshot.
+
+### Assets
+
+#### [MODIFY] [client/public/service_screenshot.png](file:///home/sakamoto/apps/commentator/client/public/service_screenshot.png)
+Replace the previous screenshot with this more realistic YouTube-based capture.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npx playwright test e2e/youtube_screenshot.spec.ts` to generate the image.
+
+### Manual Verification
+- Review the generated `service_screenshot.png` to ensure it looks indistinguishable from real usage.

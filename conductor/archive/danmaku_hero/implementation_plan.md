@@ -1,0 +1,22 @@
+# Implementation Plan - Danmaku Hero Banner
+
+Create a vibrant "Danmaku-style" hero banner for the "Commentator" extension, mimicking the energy and aesthetic of `lp/hero.png` but optimized for 1280x800.
+
+## Proposed Changes
+
+### Assets & Icons
+
+#### [NEW] [danmaku_hero.png](file:///home/sakamoto/apps/commentator/client/public/danmaku_hero.png)
+Generate a 1280x800 promotional banner showing colorful Japanese comments (Danmaku) flowing over a cinematic video on a monitor.
+
+### Configuration & Documentation
+
+#### [MODIFY] [walkthrough.md](file:///home/sakamoto/.gemini/antigravity/brain/1f280d50-ab84-445d-9be4-d40b4dc7550e/walkthrough.md)
+Update the walkthrough to include the new Danmaku hero banner.
+
+## Verification Plan
+
+### Manual Verification
+- Verify the `danmaku_hero.png` captures the vibrant Japanese comment aesthetic.
+- Ensure the dimensions are exactly 1280x800.
+- Check that the image is successfully synced across relevant directories.

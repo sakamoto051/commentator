@@ -1,0 +1,6 @@
+# Task: Create Extension Icon for Commentator
+
+- [ ] Create icon image using `generate_image` [/]
+- [ ] Process image into 16x16, 48x48, 128x128 PNG files [ ]
+- [ ] Update [manifest.json](file:///home/sakamoto/apps/commentator/client/dist/manifest.json) with `icons` field [ ]
+- [ ] Verify icons are correctly referenced and displayed [ ]

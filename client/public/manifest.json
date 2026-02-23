@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Commentator",
+  "version": "0.1.0",
+  "description": "YouTube、Netflix、Amazon Prime Video のプレイヤー上に、視聴者のコメントを再生時刻に合わせて重ねて表示する機能に特化した拡張機能です。",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/watch?v=*",
+        "https://www.netflix.com/watch/*",
+        "https://www.amazon.co.jp/*",
+        "https://www.amazon.com/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
