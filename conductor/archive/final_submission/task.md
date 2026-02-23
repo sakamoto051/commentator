@@ -1,0 +1,39 @@
+# Task: Create Extension Icon for Commentator
+
+- [x] Redesign icon with a subtle, professional aesthetic
+- [x] Process new icon into 16, 48, 128 sizes
+- [x] Redesign promotional banner (1280x800) with a clean, SaaS-like style
+- [x] Create 128x128 premium icon mock and capture
+- [x] Update extension icons with the premium version
+- [x] Final verification and notify user
+- [x] Generate realistic "usage mockup" banner (1280x800)
+- [x] Update project files with the new realistic banner
+- [x] Notify user of completion
+- [x] Generate direct "service screenshot" image (1280x800) focus on flowing comments
+- [x] Update project files with the new direct screenshot
+- [x] Update walkthrough and archive
+- [x] Redesign "Danmaku Hero" banner with copyright-safe, original content (1280x800)
+- [x] Update project files and archives with the new safe banner
+- [x] Notify user of completion
+- [x] Set up Playwright for real screenshots
+- [x] Execute Playwright script to capture lp/hero_real.png
+- [x] Replace AI-generated assets with real screenshots
+- [x] Final verification and notify user
+- [x] Create Playwright script for direct YouTube screenshots
+- [x] Inject Commentator UI into YouTube page for realistic capture
+- [x] Archive and notify user
+- [x] Fix "Video unavailable" error in YouTube screenshot
+- [x] Retake YouTube screenshot with a stable, high-quality video
+- [x] Archive and notify user of the final fix
+- [x] Generate high-res iconic/illustrative logo image
+- [x] Process into marketing tiles (440x280)
+- [x] Archive and notify user
+- [x] Refine manifest.json description for "Single Purpose" policy
+- [x] Sync manifest changes to dist and extension zip
+- [x] Review LP documentation for focused messaging
+- [x] Archive and notify user
+- [x] Implement Privacy Policy (lp/privacy.html)
+- [x] Link Privacy Policy in LP footer and extension popup
+- [x] Sync changes and notify user
+- [ ] Evaluate S3 hosting requirements and provide instructions [/]
+- [ ] Update extension URL if S3 is selected [ ]

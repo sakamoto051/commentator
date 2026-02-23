@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プライバシーポリシー - Commentator</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --primary-color: #007bff;
+      --bg-color: #0a0a1a;
+      --text-color: #e0e0e0;
+      --heading-color: #ffffff;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, inherit;
+      margin: 0;
+    }
+
+    .privacy-content {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px;
+      line-height: 1.8;
+    }
+
+    .privacy-content h1 {
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      color: var(--heading-color);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
+    }
+
+    .privacy-content h2 {
+      margin-top: 40px;
+      font-size: 1.6rem;
+      color: var(--heading-color);
+    }
+
+    .privacy-content p,
+    .privacy-content ul {
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 40px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover {
+      opacity: 0.8;
+    }
+
+    strong {
+      color: var(--heading-color);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="privacy-content">
+    <h1>プライバシーポリシー</h1>
+    <p>Commentator（以下「本拡張機能」）は、ユーザーのプライバシーを尊重し、個人情報の保護に努めます。</p>
+
+    <h2>1. 収集するデータ</h2>
+    <p>本拡張機能は、サービスの提供（動画上へのコメント表示）のために以下のデータを収集・送信します：</p>
+    <ul>
+      <li><strong>動画識別子:</strong> 視聴中の動画のID（YouTube, Netflix, Amazon Prime Video等）。</li>
+      <li><strong>コメント内容:</strong> ユーザーが投稿したテキスト。</li>
+      <li><strong>再生時間:</strong> コメントが表示されるべき動画の再生位置。</li>
+    </ul>
+
+    <h2>2. データの利用目的</h2>
+    <p>収集したデータは、同じ動画を視聴する他のユーザーに対して、指定されたタイミングでコメントを表示するという本拡張機能の根幹機能の提供のためにのみ利用されます。</p>
+
+    <h2>3. データの保存</h2>
+    <p>投稿されたコメントデータは、当社のバックエンドサーバーに保存されます。これにより、他のデバイスや他のユーザーからもコメントを閲覧することが可能になります。</p>
+
+    <h2>4. 権限の使用について</h2>
+    <p>本拡張機能が要求する権限（activeTab,
+      storage等）は、プレイヤー上へのコメントの描画、およびユーザー設定の保存のためにのみ使用されます。ユーザーの閲覧履歴を追跡したり、上記以外の目的でデータを収集することはありません。</p>
+
+    <h2>5. お問い合わせ</h2>
+    <p>本ポリシーに関するお問い合わせは、Chrome ウェブストアのサポートページよりお願いいたします。</p>
+
+    <a href="index.html" class="back-link">← ホームに戻る</a>
+  </div>
+</body>
+
+</html>
