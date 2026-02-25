@@ -106,41 +106,65 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
   }
 
   function createInputForm(playerElement: HTMLElement, position: { top?: string; bottom?: string; right?: string; left?: string }) {
-    document.getElementById("commentator-input-container")?.remove();
+    const HOST_ID = "commentator-input-host";
+    let host = document.getElementById(HOST_ID);
+    if (host) host.remove();
+
+    host = document.createElement("div");
+    host.id = HOST_ID;
+    // html直下に配置し、fixedかつサイズ0で一切のレイアウト干渉を排除
+    host.style.cssText = "position:fixed !important;top:0;left:0;width:0;height:0;z-index:2147483647 !important;pointer-events:none !important;overflow:visible !important;display:block !important;transform:none !important;filter:none !important;";
+    document.documentElement.appendChild(host);
+
+    const observer = new MutationObserver(() => {
+      if (host && host.parentElement !== document.documentElement) {
+        document.documentElement.appendChild(host);
+      }
+    });
+    observer.observe(document.documentElement, { childList: true });
+
+    const shadow = host.attachShadow({ mode: "open" });
 
     const platform = createPlatform();
 
     const container = document.createElement("div");
     container.id = "commentator-input-container";
-    container.style.position = "absolute";
+    container.style.cssText = `
+      position: fixed !important;
+      z-index: 2147483647 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      background: rgba(15, 15, 15, 0.75) !important;
+      backdrop-filter: blur(12px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+      padding: 10px 16px !important;
+      border-radius: 16px !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+      pointer-events: auto !important;
+      user-select: none !important;
+      transition: opacity 0.3s ease, transform 0.2s ease !important;
+      left: ${position.left || "auto"} !important;
+      top: ${position.top || "auto"} !important;
+      right: ${position.right || "auto"} !important;
+      bottom: ${position.bottom || "auto"} !important;
+      width: auto !important;
+      height: auto !important;
+      opacity: 0.9;
+    `;
 
-    // プラットフォームごとの位置を適用
-    if (position.top) container.style.top = position.top;
-    if (position.bottom) container.style.bottom = position.bottom;
-    if (position.right) container.style.right = position.right;
-    if (position.left) container.style.left = position.left;
-
-    container.style.zIndex = "2147483647";
-    container.style.display = "flex";
-    container.style.alignItems = "center";
-    container.style.gap = "4px";
-    container.style.background = "rgba(0, 0, 0, 0.7)";
-    container.style.padding = "4px 6px";
-    container.style.borderRadius = "6px";
-    container.style.opacity = "0.8";
-    container.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.5)";
-    container.style.pointerEvents = "auto";
-    container.style.userSelect = "none";
-
-    // ドラッグハンドル
+    // ドラッグハンドル (スタイリッシュなドットデザイン)
     const handle = document.createElement("div");
     handle.title = "ドラッグして移動";
-    handle.style.cssText = "width:8px;height:16px;cursor:grab;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;";
-    for (let i = 0; i < 3; i++) {
+    handle.style.cssText = "width:12px;display:grid;grid-template-columns:1fr 1fr;gap:3px;cursor:grab;opacity:0.5;transition:opacity 0.2s;flex-shrink:0;";
+    for (let i = 0; i < 6; i++) {
       const dot = document.createElement("div");
-      dot.style.cssText = "width:8px;height:2px;background:rgba(255,255,255,0.5);border-radius:1px;";
+      dot.style.cssText = "width:3px;height:3px;background:white;border-radius:50%;";
       handle.appendChild(dot);
     }
+    handle.onmouseenter = () => { handle.style.opacity = "1"; };
+    handle.onmouseleave = () => { handle.style.opacity = "0.5"; };
 
     // ドラッグロジック
     let dragging = false;
@@ -154,55 +178,83 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
       e.stopPropagation();
       dragging = true;
       handle.style.cursor = "grabbing";
+      container.style.transform = "scale(1.02)";
 
-      // bottom/right → left/top に変換してドラッグ管理しやすくする
       const rect = container.getBoundingClientRect();
-      const parentRect = playerElement.getBoundingClientRect();
-      startLeft = rect.left - parentRect.left;
-      startTop = rect.top - parentRect.top;
+      startLeft = rect.left;
+      startTop = rect.top;
       startX = e.clientX;
       startY = e.clientY;
 
-      container.style.left = `${startLeft}px`;
-      container.style.top = `${startTop}px`;
-      container.style.right = "";
-      container.style.bottom = "";
+      container.style.setProperty("left", `${startLeft}px`, "important");
+      container.style.setProperty("top", `${startTop}px`, "important");
+      container.style.setProperty("right", "auto", "important");
+      container.style.setProperty("bottom", "auto", "important");
     });
 
-    document.addEventListener("mousemove", (e) => {
+    const moveHandler = (e: MouseEvent) => {
       if (!dragging) return;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      container.style.left = `${startLeft + dx}px`;
-      container.style.top = `${startTop + dy}px`;
-    });
+      container.style.setProperty("left", `${startLeft + dx}px`, "important");
+      container.style.setProperty("top", `${startTop + dy}px`, "important");
+    };
 
-    document.addEventListener("mouseup", () => {
+    const upHandler = () => {
       if (!dragging) return;
       dragging = false;
       handle.style.cursor = "grab";
-    });
+      container.style.transform = "none";
+    };
+
+    window.addEventListener("mousemove", moveHandler);
+    window.addEventListener("mouseup", upHandler);
 
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "コメントを入力...";
-    input.style.background = "white";
-    input.style.color = "#333";
-    input.style.border = "1px solid #ccc";
-    input.style.borderRadius = "3px";
-    input.style.padding = "3px 7px";
-    input.style.fontSize = "13px";
-    input.style.width = "160px";
+    input.style.cssText = `
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: white !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 10px !important;
+      padding: 8px 14px !important;
+      font-size: 14px !important;
+      width: 320px !important;
+      outline: none !important;
+      transition: background 0.2s, border-color 0.2s !important;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    `;
+    input.onfocus = () => {
+      input.style.background = "rgba(255, 255, 255, 0.15) !important";
+      input.style.borderColor = "rgba(255, 255, 255, 0.4) !important";
+      container.style.opacity = "1";
+    };
+    input.onblur = () => {
+      input.style.background = "rgba(255, 255, 255, 0.1) !important";
+      input.style.borderColor = "rgba(255, 255, 255, 0.2) !important";
+      container.style.opacity = "0.7";
+    };
 
     const button = document.createElement("button");
     button.innerText = "送信";
-    button.style.background = "#ff0000";
-    button.style.color = "white";
-    button.style.border = "none";
-    button.style.borderRadius = "3px";
-    button.style.padding = "3px 8px";
-    button.style.cursor = "pointer";
-    button.style.fontSize = "12px";
+    button.style.cssText = `
+      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px !important;
+      padding: 8px 18px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      transition: transform 0.2s, filter 0.2s !important;
+      white-space: nowrap !important;
+      box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3) !important;
+    `;
+    button.onmouseenter = () => { button.style.filter = "brightness(1.1)"; button.style.transform = "translateY(-1px)"; };
+    button.onmouseleave = () => { button.style.filter = "none"; button.style.transform = "none"; };
+    button.onmousedown = () => { button.style.transform = "translateY(1px) scale(0.98)"; };
+    button.onmouseup = () => { button.style.transform = "translateY(-1px)"; };
 
     let isSubmitting = false;
 
@@ -217,14 +269,13 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
 
       const playback_time_ms = Math.floor(video.currentTime * 1000);
 
-      // 重複描画防止
       const submitId = `${playback_time_ms}-${content}`;
       renderedCommentIds.add(submitId);
       displayComment(content);
 
       isSubmitting = true;
       button.disabled = true;
-      button.innerText = "...";
+      button.innerText = "•••";
 
       try {
         await fetch(API_URL, {
@@ -239,7 +290,7 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
         });
         input.value = "";
       } catch (error) {
-        // エラーログ削除
+        // ignore
       } finally {
         isSubmitting = false;
         button.disabled = false;
@@ -264,13 +315,13 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
       }
     });
 
-    input.addEventListener("focus", () => { container.style.opacity = "1"; });
-    input.addEventListener("blur", () => { container.style.opacity = "0.3"; });
-
     container.appendChild(handle);
     container.appendChild(input);
     container.appendChild(button);
-    playerElement.appendChild(container);
+    shadow.appendChild(container);
+
+    // 初期透明度
+    container.style.opacity = "0.7";
   }
 
   let lastProcessedTimeMs = -1;
@@ -278,7 +329,6 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
   function init() {
     const platform = createPlatform();
     if (!platform) {
-      // 対応していないサイト
       return;
     }
 
@@ -286,11 +336,11 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
     const player = platform.getPlayerElement(video);
 
     if (!video || !player) {
-      setTimeout(init, 2000); // プレイヤーが出るまで少し長めにリトライ
+      setTimeout(init, 2000);
       return;
     }
 
-    if (player.querySelector("#commentator-overlay")) return;
+    if (player.querySelector("#commentator-overlay") || document.getElementById("commentator-input-host")) return;
 
     createOverlay(player);
     createInputForm(player, platform.getInputPosition());
@@ -344,7 +394,7 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
       if (location.href !== lastUrl) {
         lastUrl = location.href;
         document.getElementById("commentator-overlay")?.remove();
-        document.getElementById("commentator-input-container")?.remove();
+        document.getElementById("commentator-input-host")?.remove();
         setTimeout(init, 1000);
       }
     }).observe(document, { subtree: true, childList: true });
