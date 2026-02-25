@@ -58,8 +58,26 @@ test('verify new stylish UI on youtube', async ({ page }) => {
     input.style.cssText = "background: rgba(255, 255, 255, 0.1) !important;color: white !important;border: 1px solid rgba(255, 255, 255, 0.2) !important;border-radius: 10px !important;padding: 8px 14px !important;font-size: 14px !important;width: 320px !important;outline: none !important;";
 
     const button = document.createElement("button");
-    button.innerText = "送信";
-    button.style.cssText = "background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%) !important;color: white !important;border: none !important;border-radius: 10px !important;padding: 8px 18px !important;font-size: 14px !important;font-weight: 600 !important;white-space: nowrap !important;box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3) !important;";
+    const btnText = document.createElement("span");
+    btnText.textContent = "送信";
+    button.appendChild(btnText);
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", "16");
+    svg.setAttribute("height", "16");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.5");
+    svg.style.marginLeft = "8px";
+
+    const path = document.createElementNS(svgNS, "path");
+    path.setAttribute("d", "M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z");
+    svg.appendChild(path);
+    button.appendChild(svg);
+
+    button.style.cssText = "background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%) !important;color: white !important;border: 1px solid rgba(255,255,255,0.25) !important;border-radius: 12px !important;padding: 10px 20px !important;font-size: 14px !important;font-weight: 700 !important;white-space: nowrap !important;box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3) !important;display: flex !important;align-items: center !important;";
 
     container.appendChild(handle);
     container.appendChild(input);
@@ -67,5 +85,5 @@ test('verify new stylish UI on youtube', async ({ page }) => {
     shadow.appendChild(container);
   });
 
-  await page.screenshot({ path: 'test-results/ui_redesign.png' });
+  await page.screenshot({ path: 'test-results/ui_button_improvement.png' });
 });

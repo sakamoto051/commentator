@@ -112,7 +112,6 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
 
     host = document.createElement("div");
     host.id = HOST_ID;
-    // html直下に配置し、fixedかつサイズ0で一切のレイアウト干渉を排除
     host.style.cssText = "position:fixed !important;top:0;left:0;width:0;height:0;z-index:2147483647 !important;pointer-events:none !important;overflow:visible !important;display:block !important;transform:none !important;filter:none !important;";
     document.documentElement.appendChild(host);
 
@@ -124,37 +123,104 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
     observer.observe(document.documentElement, { childList: true });
 
     const shadow = host.attachShadow({ mode: "open" });
-
     const platform = createPlatform();
 
     const container = document.createElement("div");
     container.id = "commentator-input-container";
-    container.style.cssText = `
-      position: fixed !important;
-      z-index: 2147483647 !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 12px !important;
-      background: rgba(15, 15, 15, 0.75) !important;
-      backdrop-filter: blur(12px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
-      padding: 10px 16px !important;
-      border-radius: 16px !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-      pointer-events: auto !important;
-      user-select: none !important;
-      transition: opacity 0.3s ease, transform 0.2s ease !important;
-      left: ${position.left || "auto"} !important;
-      top: ${position.top || "auto"} !important;
-      right: ${position.right || "auto"} !important;
-      bottom: ${position.bottom || "auto"} !important;
-      width: auto !important;
-      height: auto !important;
-      opacity: 0.9;
-    `;
 
-    // ドラッグハンドル (スタイリッシュなドットデザイン)
+    const styleEl = document.createElement("style");
+    shadow.appendChild(styleEl);
+
+    // 輝度計算ヘルパー
+    const getLuminance = (hex: string) => {
+      const r = parseInt(hex.slice(1, 3), 16) / 255;
+      const g = parseInt(hex.slice(3, 5), 16) / 255;
+      const b = parseInt(hex.slice(5, 7), 16) / 255;
+      const a = [r, g, b].map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    };
+
+    const getContrastColor = (hex: string) => {
+      return getLuminance(hex) > 0.45 ? "#000000" : "#ffffff";
+    };
+
+    // スタイル適用関数
+    const applyStyles = (opacity: number, color: string, bgColor: string) => {
+      const r = parseInt(bgColor.slice(1, 3), 16);
+      const g = parseInt(bgColor.slice(3, 5), 16);
+      const b = parseInt(bgColor.slice(5, 7), 16);
+
+      const isDarkBg = getLuminance(bgColor) < 0.4;
+      const themeColor = "#ff4b2b"; // 基調色を固定
+
+      // Placeholderの色を動的に変更
+      styleEl.innerHTML = `
+        input::placeholder { color: ${isDarkBg ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)"} !important; }
+      `;
+
+      // setProperty を使用して確実に !important を適用
+      const s = container.style;
+      s.setProperty("position", "fixed", "important");
+      s.setProperty("z-index", "2147483647", "important");
+      s.setProperty("display", "flex", "important");
+      s.setProperty("align-items", "center", "important");
+      s.setProperty("gap", "12px", "important");
+      s.setProperty("background", `rgba(${r}, ${g}, ${b}, 0.75)`, "important");
+      s.setProperty("backdrop-filter", "blur(12px) saturate(180%)", "important");
+      s.setProperty("-webkit-backdrop-filter", "blur(12px) saturate(180%)", "important");
+      s.setProperty("padding", "10px 16px", "important");
+      s.setProperty("border-radius", "16px", "important");
+      s.setProperty("border", `1px solid ${isDarkBg ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)"}`, "important");
+      s.setProperty("box-shadow", "0 8px 32px rgba(0, 0, 0, 0.4)", "important");
+      s.setProperty("pointer-events", "auto", "important");
+      s.setProperty("user-select", "none", "important");
+      s.setProperty("transition", "opacity 0.3s ease, transform 0.2s ease", "important");
+      s.setProperty("left", position.left || "auto", "important");
+      s.setProperty("top", position.top || "auto", "important");
+      s.setProperty("right", position.right || "auto", "important");
+      s.setProperty("bottom", position.bottom || "auto", "important");
+      s.setProperty("width", "auto", "important");
+      s.setProperty("height", "auto", "important");
+      s.setProperty("opacity", opacity.toString(), "important");
+      s.setProperty("color", isDarkBg ? "white" : "black", "important");
+
+      if (input) {
+        input.style.setProperty("color", isDarkBg ? "white" : "black", "important");
+        input.style.setProperty("background", isDarkBg ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)", "important");
+        input.style.setProperty("border", `1px solid ${themeColor}${isDarkBg ? "44" : "66"}`, "important");
+      }
+      if (button) {
+        button.style.setProperty("background", `linear-gradient(135deg, ${themeColor} 0%, ${themeColor}dd 100%)`, "important");
+        button.style.setProperty("box-shadow", `0 4px 12px ${themeColor}4d`, "important");
+        button.style.setProperty("color", "white", "important"); // 送信ボタンは常に白文字
+        button.style.setProperty("border", "1px solid rgba(255, 255, 255, 0.25)", "important");
+
+        const svg = button.querySelector('svg');
+        if (svg) svg.style.setProperty("color", "white", "important");
+      }
+    };
+
+    // 初期値の読み込み
+    chrome.storage.local.get(['inputOpacity', 'inputBgColor'], (result) => {
+      const currentOpacity = result.inputOpacity !== undefined ? result.inputOpacity : 0.7;
+      const currentColor = '#ff4b2b'; // デフォルトに固定
+      const currentBgColor = result.inputBgColor || '#0f0f0f';
+      applyStyles(currentOpacity, currentColor, currentBgColor);
+    });
+
+    // 設定変更の監視
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (namespace === 'local' && (changes.inputOpacity || changes.inputBgColor)) {
+        chrome.storage.local.get(['inputOpacity', 'inputBgColor'], (result) => {
+          const currentOpacity = result.inputOpacity !== undefined ? result.inputOpacity : 0.7;
+          const currentColor = '#ff4b2b'; // デフォルトに固定
+          const currentBgColor = result.inputBgColor || '#0f0f0f';
+          applyStyles(currentOpacity, currentColor, currentBgColor);
+        });
+      }
+    });
+
+    // ドラッグハンドル
     const handle = document.createElement("div");
     handle.title = "ドラッグして移動";
     handle.style.cssText = "width:12px;display:grid;grid-template-columns:1fr 1fr;gap:3px;cursor:grab;opacity:0.5;transition:opacity 0.2s;flex-shrink:0;";
@@ -233,28 +299,68 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
     input.onblur = () => {
       input.style.background = "rgba(255, 255, 255, 0.1) !important";
       input.style.borderColor = "rgba(255, 255, 255, 0.2) !important";
-      container.style.opacity = "0.7";
+      chrome.storage.local.get(['inputOpacity'], (result) => {
+        container.style.opacity = (result.inputOpacity !== undefined ? result.inputOpacity : 0.7).toString();
+      });
     };
 
     const button = document.createElement("button");
-    button.innerText = "送信";
-    button.style.cssText = `
-      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%) !important;
-      color: white !important;
-      border: none !important;
-      border-radius: 10px !important;
-      padding: 8px 18px !important;
-      cursor: pointer !important;
-      font-size: 14px !important;
-      font-weight: 600 !important;
-      transition: transform 0.2s, filter 0.2s !important;
-      white-space: nowrap !important;
-      box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3) !important;
-    `;
-    button.onmouseenter = () => { button.style.filter = "brightness(1.1)"; button.style.transform = "translateY(-1px)"; };
-    button.onmouseleave = () => { button.style.filter = "none"; button.style.transform = "none"; };
-    button.onmousedown = () => { button.style.transform = "translateY(1px) scale(0.98)"; };
-    button.onmouseup = () => { button.style.transform = "translateY(-1px)"; };
+    button.title = "送信 (Enter)";
+    const bs = button.style;
+    bs.setProperty("cursor", "pointer", "important");
+    bs.setProperty("transition", "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)", "important");
+    bs.setProperty("white-space", "nowrap", "important");
+    bs.setProperty("display", "flex", "important");
+    bs.setProperty("align-items", "center", "important");
+    bs.setProperty("gap", "6px", "important");
+    bs.setProperty("letter-spacing", "0.3px", "important");
+    bs.setProperty("font-weight", "700", "important");
+    bs.setProperty("border-radius", "10px", "important");
+    bs.setProperty("padding", "8px", "important"); // アイコンのみなので均等に
+    bs.setProperty("font-size", "13px", "important");
+    bs.setProperty("color", "white", "important");
+    bs.setProperty("border", "1px solid rgba(255, 255, 255, 0.25)", "important");
+    bs.setProperty("line-height", "0", "important"); // アイコンの垂直中央揃えのため
+
+    // SVGを手動生成 (innerHTMLを避ける)
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", "18"); // アイコンのみなので少し大きく
+    svg.setAttribute("height", "18");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.5");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+
+    // アイコン自体の微調整
+    svg.style.display = "block";
+
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("x1", "22"); line.setAttribute("y1", "2"); line.setAttribute("x2", "11"); line.setAttribute("y2", "13");
+    svg.appendChild(line);
+
+    const poly = document.createElementNS(svgNS, "polygon");
+    poly.setAttribute("points", "22 2 15 22 11 13 2 9 22 2");
+    svg.appendChild(poly);
+
+    button.appendChild(svg);
+    button.onmouseenter = () => {
+      button.style.filter = "brightness(1.2) saturate(1.1)";
+      button.style.transform = "translateY(-2px) scale(1.02)";
+      button.style.boxShadow = (button.style.boxShadow || "").replace(/rgba?\(.*?\)/, (match) => match.replace(/0\.\d+/, "0.6"));
+    };
+    button.onmouseleave = () => {
+      button.style.filter = "none";
+      button.style.transform = "none";
+      chrome.storage.local.get(['inputColor'], (result) => {
+        const color = result.inputColor || '#ff4b2b';
+        button.style.boxShadow = `0 4px 12px ${color}4d !important`;
+      });
+    };
+    button.onmousedown = () => { button.style.transform = "translateY(1px) scale(0.96)"; };
+    button.onmouseup = () => { button.style.transform = "translateY(-2px) scale(1.02)"; };
 
     let isSubmitting = false;
 
@@ -275,7 +381,10 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
 
       isSubmitting = true;
       button.disabled = true;
-      button.innerText = "•••";
+      button.style.opacity = "0.7";
+      button.style.cursor = "wait";
+      const btnText = button.querySelector('span');
+      if (btnText) btnText.innerText = "•••";
 
       try {
         await fetch(API_URL, {
@@ -294,7 +403,10 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
       } finally {
         isSubmitting = false;
         button.disabled = false;
-        button.innerText = "送信";
+        button.style.opacity = "1";
+        button.style.cursor = "pointer";
+        const btnText = button.querySelector('span');
+        if (btnText) btnText.innerText = "送信";
         input.focus();
       }
     };
@@ -319,9 +431,6 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
     container.appendChild(input);
     container.appendChild(button);
     shadow.appendChild(container);
-
-    // 初期透明度
-    container.style.opacity = "0.7";
   }
 
   let lastProcessedTimeMs = -1;
