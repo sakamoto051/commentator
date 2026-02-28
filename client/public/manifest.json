@@ -10,14 +10,16 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.youtube.com/watch?v=*",
-        "https://www.netflix.com/watch/*",
-        "https://www.amazon.co.jp/*",
-        "https://www.amazon.com/*"
+        "*://*.youtube.com/watch?v=*",
+        "*://*.netflix.com/watch/*",
+        "*://*.amazon.co.jp/*",
+        "*://*.amazon.com/*"
       ],
       "js": [
         "content.js"
-      ]
+      ],
+      "all_frames": true,
+      "run_at": "document_start"
     }
   ],
   "action": {

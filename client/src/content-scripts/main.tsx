@@ -12,6 +12,7 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
   let currentVideoId: string | null = null;
   let comments: Comment[] = [];
   let loadedChunks: Set<number> = new Set();
+  let fetchingChunks: Set<number> = new Set();
   let renderedCommentIds: Set<string> = new Set(); // 描画済みID管理
 
   async function fetchComments(videoId: string, startMs: number, endMs: number) {
@@ -29,17 +30,39 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
     const chunkSize = 5 * 60 * 1000; // 5分
     const chunkIndex = Math.floor(timeMs / chunkSize) * chunkSize;
 
-    if (loadedChunks.has(chunkIndex)) return true;
+    if (loadedChunks.has(chunkIndex) || fetchingChunks.has(chunkIndex)) return true;
 
-    const newComments = await fetchComments(videoId, chunkIndex, chunkIndex + chunkSize);
+    fetchingChunks.add(chunkIndex);
+    try {
+      const newComments = await fetchComments(videoId, chunkIndex, chunkIndex + chunkSize);
 
-    // 重複を避けてマージ
-    const existingIds = new Set(comments.map(c => `${c.playback_time_ms}-${c.content}`));
-    const uniqueNew = newComments.filter(c => !existingIds.has(`${c.playback_time_ms}-${c.content}`));
+      // Map を使用して高速に重複排除
+      const commentMap = new Map(comments.map(c => [`${c.playback_time_ms}-${c.content}`, c]));
+      newComments.forEach(c => {
+        const id = `${c.playback_time_ms}-${c.content}`;
+        if (!commentMap.has(id)) {
+          commentMap.set(id, c);
+        }
+      });
 
-    comments = [...comments, ...uniqueNew].sort((a, b) => a.playback_time_ms - b.playback_time_ms);
-    loadedChunks.add(chunkIndex);
-    return true;
+      comments = Array.from(commentMap.values()).sort((a, b) => a.playback_time_ms - b.playback_time_ms);
+      loadedChunks.add(chunkIndex);
+      return true;
+    } finally {
+      fetchingChunks.delete(chunkIndex);
+    }
+  }
+
+  // 先読みロジック
+  async function prefetchNextChunk(videoId: string, timeMs: number) {
+    const chunkSize = 5 * 60 * 1000;
+    const nextChunkTime = timeMs + chunkSize;
+    const currentChunkEnd = (Math.floor(timeMs / chunkSize) + 1) * chunkSize;
+
+    // 現在のチャンクの終わりまで1分を切ったら次を読み込む
+    if (currentChunkEnd - timeMs < 60 * 1000) {
+      await loadChunk(videoId, currentChunkEnd);
+    }
   }
 
   function createOverlay(playerElement: HTMLElement) {
@@ -71,7 +94,8 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
 
     const overlay = document.createElement("div");
     overlay.id = "commentator-overlay";
-    overlay.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2147483647;overflow:hidden;";
+    // z-index を確実に最大にし、背景を透過
+    overlay.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2147483647 !important;overflow:hidden;background:transparent !important;";
     playerElement.appendChild(overlay);
     return overlay;
   }
@@ -455,6 +479,13 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
     createInputForm(player, platform.getInputPosition());
 
     let isProcessing = false;
+
+    // シーク時のリセット処理
+    video.addEventListener("seeking", () => {
+      renderedCommentIds.clear();
+      lastProcessedTimeMs = Math.floor(video.currentTime * 1000) - 1;
+    });
+
     video.addEventListener("timeupdate", async () => {
       const videoId = platform.getVideoId();
       if (!videoId) {
@@ -480,6 +511,7 @@ if ((window as any).__COMMENTATOR_INITIALIZED__) {
       }
 
       await loadChunk(videoId, currentTimeMs);
+      prefetchNextChunk(videoId, currentTimeMs); // 先読み開始
 
       const upcoming = comments.filter(c =>
         c.playback_time_ms > lastProcessedTimeMs &&
