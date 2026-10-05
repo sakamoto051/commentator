@@ -11,7 +11,7 @@ backend/lib/*.d.ts
 # Environment Variables
 .env
 .env.*
-! .env.example
+!.env.example
 
 # Logs
 *.log
@@ -28,3 +28,9 @@ coverage/
 .idea/
 .vscode/
 *.swp
+
+!**/.env.example
+# Rebuild distributables from source; do not commit local reports
+*.zip
+test-results/
+playwright-report/

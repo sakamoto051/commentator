@@ -10,7 +10,7 @@ const docClient = DynamoDBDocumentClient.from(client);
 const TABLE_NAME = process.env.TABLE_NAME;
 
 export const handler = async (event: any) => {
-  console.log("Event:", JSON.stringify(event));
+  // Do not log request bodies, headers, or caller identifiers.
 
   const method = event.requestContext.http.method;
 
