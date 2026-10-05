@@ -16,6 +16,24 @@ TypeScript / React 18 / Vite / Chrome Manifest V3 / AWS CDK / Lambda / DynamoDB 
 - [docs](docs): 紹介ページとプライバシー説明
 - [e2e](e2e): ブラウザ確認用テスト
 
+## システムアーキテクチャ
+
+```mermaid
+flowchart LR
+  Video["対象サイトの動画プレイヤー"] -->|"動画ID・再生位置"| Content["Chrome拡張 / content script"]
+  Content -->|"同期コメントを重ねて表示"| Video
+  Popup["拡張の設定ポップアップ"] -->|"表示設定の保存"| Storage[("chrome.storage.local")]
+  Storage -->|"設定の読み込み・変更通知"| Content
+  Content <-->|"HTTP / 時間範囲の取得・投稿"| URL["Lambda Function URL"]
+  URL -->|"リクエスト"| Lambda["コメント処理 Lambda"]
+  Lambda <-->|"Query・Put / 動画IDと再生時刻"| DB[("DynamoDB")]
+```
+
+- プレイヤーとの連携・先読み・描画は [content script](client/src/content-scripts/main.tsx)、サイト選択は [platform factory](client/src/content-scripts/platforms/factory.ts) が担当します。
+- [設定画面](client/src/main.tsx) はブラウザ内ストレージを使います。コメント本文の保存先は [Lambda](backend/lambda/comment.ts) が操作する DynamoDB です。
+- Function URL とテーブルは [CDK定義](backend/lib/backend-stack.ts) にあります。AWS環境の作成は別途必要で、図はデプロイ済み状態を保証しません。
+- コメントは再生時刻に合わせたHTTP取得です。独立したリアルタイム配信サーバーや常駐workerは実装していません。認証なしAPIの制約は下記を参照してください。
+
 ## 実装上のポイント
 動画サービスごとの差分を platform クラスに分離しています。コメントの先読みとキャッシュ、描画済みIDの管理により、シークや重複取得を扱う構成です。入力UIには Shadow DOM を使用しています。
 
